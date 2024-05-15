@@ -9,11 +9,8 @@
 
 require './config/init.php';
 
-
-
 // ************         Affichage du header  ***************************************
 //  require './controller/header.php';
-
 
 
 // ************          Gestion de Routing ***************************************
