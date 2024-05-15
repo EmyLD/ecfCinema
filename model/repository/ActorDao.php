@@ -22,4 +22,10 @@ class ActorDao
         $data = $query->fetch();
         return new Actor($data['id'], $data['name'], $data['firstname']);
     }
+
+    public static function addOne(string $character, string $name, string $firstname)
+    {
+        $query = BDD->prepare('INSERT INTO actor (character, name, firstname) VALUES (:character, :name, :firstname)');
+        $query->execute(array(':character' => $character, ':name' => $name, 'firstname' => $firstname));
+    }
 }
