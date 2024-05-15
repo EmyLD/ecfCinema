@@ -12,7 +12,7 @@ require './config/init.php';
 
 
 // ************         Affichage du header  ***************************************
-//  require './controller/header.php';
+ require './controller/header.php';
 
 
 
@@ -35,4 +35,4 @@ if (array_key_exists($controller, $routes)) {
 
 
 // ************          Affichage du footer  ***************************************
-// require './controller/footer.php';
+require './controller/footer.php';

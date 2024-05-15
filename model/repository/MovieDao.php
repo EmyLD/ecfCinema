@@ -1,5 +1,8 @@
 <?php
 
+require_once './model/repository/RoleDao.php';
+require_once './model/entity/Role.php';
+
 class MovieDao
 {
 
@@ -9,7 +12,8 @@ class MovieDao
         $query->execute();
         $movies = array();
         while($data = $query->fetch()){
-            $movies[] = new Movie($data['id'], $data['title'], $data['director'], $data['poster'], $data['year'],  $data['roles']);
+            $roles = RoleDao::getByMovie($data['id']);
+            $movies[] = new Movie($data['id'], $data['title'], $data['director'], $data['poster'], $data['year'], $roles);
         }
         return $movies;
     }
@@ -20,6 +24,7 @@ class MovieDao
           $query = BDD->prepare('SELECT * FROM movie WHERE id = :id_movie');
           $query->execute(array(':id_movie' => $id));
           $data = $query->fetch();
-          return new Movie($data['id'], $data['title'], $data['director'], $data['poster'], $data['year'], $data['roles']);
+          $roles = RoleDao::getByMovie($data['id']);
+          return new Movie($data['id'], $data['title'], $data['director'], $data['poster'], $data['year'], $roles);
       }
 }
