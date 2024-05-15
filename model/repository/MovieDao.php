@@ -22,4 +22,10 @@ class MovieDao
           $data = $query->fetch();
           return new Movie($data['id'], $data['title'], $data['director'], $data['poster'], $data['year'], $data['roles']);
       }
+
+      public static function addOne(string $title, int $year, string $poster, string $director)
+      {
+          $query = BDD->prepare('INSERT INTO movie (title, year, poster, director) VALUES (:title, :year, :poster, :director)');
+          $query->execute(array(':title' => $title, ':year' => $year, ':poster' => $poster, ':director' => $director));
+      }
 }
