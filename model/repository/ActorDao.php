@@ -28,9 +28,9 @@ class ActorDao
     }
 
     //Ajoute 1 acteur
-    public static function addOne(string $character, string $name, string $firstname)
+    public static function addOne(string $name, string $firstname)
     {
-        $query = BDD->prepare('INSERT INTO actor (character, name, firstname) VALUES (:character, :name, :firstname)');
-        $query->execute(array(':character' => $character, ':name' => $name, ':firstname' => $firstname));
+        $query = BDD->prepare('INSERT INTO actor (name, firstname) VALUES (:name, :firstname)');
+        $query->execute(array(':name' => $name, ':firstname' => $firstname));
     }
 }

@@ -24,7 +24,7 @@ class RoleDao
         return $roles;
     }
 
-     //Récupérer plus d'info sur 1 role
+     //Récupére 1 role
      public static function getOne(int $id): Role
      {
          $query = BDD->prepare('SELECT * FROM role WHERE id = :id_role');
@@ -34,6 +34,7 @@ class RoleDao
          return new Role($data['id'], $data['character'], $actor);
      }
 
+     //Récupère les infos depuis un film
      public static function getByMovie($id)
      {
          $query = BDD->prepare('SELECT * FROM role INNER JOIN movie ON role.fk_movie = movie.id WHERE role.fk_movie = :id_movie');
