@@ -15,25 +15,25 @@ class Actor
 
 
 
-         /**
-          * Get the value of id
-         */ 
+        /**
+         * Get the value of id
+         */
         public function getId()
         {
-             return $this->id;
-         }
+                return $this->id;
+        }
 
-         /**
+        /**
          * Set the value of id
          *
          * @return  self
-          */ 
-         public function setId($id)
-         {
-          $this->id = $id;
+         */
+        public function setId($id)
+        {
+                $this->id = $id;
 
-           return $this;
-         }
+                return $this;
+        }
 
 
         /**
@@ -75,6 +75,4 @@ class Actor
 
                 return $this;
         }
-
- 
 }
