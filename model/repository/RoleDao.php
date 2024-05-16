@@ -54,11 +54,6 @@ class RoleDao
          return ActorDao::getOne($data['fk_actor']);;
      }
 
-    // public static function addOne($data): bool
-    // {
-       
-    // }
-
      //Ajoute un rôle dans la BDD
     public static function addOne(int $fk_movie, int $fk_actor, string $character)
     {
