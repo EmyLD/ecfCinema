@@ -8,7 +8,14 @@
   </a>
   {% if session != null %}
   <p>Hey {{ session }} !</p>
-
-  {% else %} L'utilisateur n'est pas connecté {% endif %}
+  <a href="disconnect">
+    <button>Se déconnecter</button>
+  </a>
+  {% else %}
+  <p>Hey {{ session }} !</p>
+  <a href="login">
+    <button>Se connecter</button>
+  </a>
+  {% endif %}
 </header>
 <hr />
