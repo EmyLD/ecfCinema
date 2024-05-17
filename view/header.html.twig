@@ -1,18 +1,14 @@
+<header>
+  <p>Ceci est notre header</p>
+  <a href="home">
+    <button>Accueil</button>
+  </a>
+  <a href="creer">
+    <button>Créer</button>
+  </a>
+  {% if session != null %}
+  <p>Hey {{ session }} !</p>
 
-
-		<header>
-			<p>Ceci est notre header</p>
-			<a href="home">
-				<button>Accueil</button>
-			</a>
-			<a href="creer">
-				<button>Créer</button>
-			</a>
-			{% if session.user is defined %}
-				Bonjour
-				{{session.user}}
-			{% else %}
-				L'utilisateur n'est pas connecté
-			{% endif %}
-
-		</header><hr>
+  {% else %} L'utilisateur n'est pas connecté {% endif %}
+</header>
+<hr />
