@@ -15,7 +15,7 @@ if(isset($_POST['email']) && isset($_POST['password'])) {
       
         if ($user) {
             $_SESSION['username'] = $user['username'];
-            header('Location: /ECF/home');
+            header('Location: /ecfCinema/home');
             exit();
         }elseif($user == "not good"){
             $error = 'Identifiant ou mot de passe incorrect';

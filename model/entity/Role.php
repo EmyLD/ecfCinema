@@ -49,28 +49,31 @@ class Role
          */
         public function setCharacter($character)
         {
+
                 $this->character = $character;
 
                 return $this;
         }
 
-                /**
-                 * Get the value of actor
-                 */ 
-                public function getActor()
-                {
-                                return $this->actor;
-                }
+        /**
+         * Get the value of actor
+         */ 
+        public function getActor()
+        {
+
+                return $this->actor;
+        }
 
                 /**
                  * Set the value of actor
                  *
                  * @return  self
                  */ 
-                public function setActor($actor)
-                {
-                                $this->actor = $actor;
+        public function setActor($actor)
+        {
 
-                                return $this;
-                }
+                $this->actor = $actor;
+
+                return $this;
+        }
 }
