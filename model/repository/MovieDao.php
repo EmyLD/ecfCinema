@@ -38,26 +38,25 @@ class MovieDao
 
 
     //Ajoute 1 film dans la BDD
-    public static function createMovie($postData)
+    public static function createMovie($title, $year, $poster, $director)
     {
-        if (empty($postData['title']) || empty($postData['year']) || empty($postData['poster']) || empty($postData['director']) || empty($postData['roles']) || !is_array($postData['roles'])) {
-            return "Tous les champs doivent être remplis";
-        }
+        // if (empty($_POST['title']) || empty($_POST['year']) || empty($_POST['poster']) || empty($_POST['director']) || empty($_POST['roles']) || !is_array($_POST['roles'])) {
+        //     return "Tous les champs doivent être remplis";
+        // }
 
         //Ajoute le film dans la BDD
-        MovieDao::addOne($postData['title'], $postData['year'], $postData['poster'], $postData['director']);
+        MovieDao::addOne($title, $year, $poster, $director);
         $idMovie = BDD->lastInsertId();
 
         //Parcourt chaque rôle dans le tableau
-        foreach ($postData['roles'] as $role) {
+        foreach ($_POST['roles'] as $role) {
             if (empty($role['character']) || empty($role['name']) || empty($role['firstname'])) {
                 return "Les informations d'un ou plusieurs rôles sont manquantes";
             }
 
             //Ajoute l'acteur dans la BDD    
-            ActorDao::addOne($postData['name'], $role['firstname']);
+            ActorDao::addOne($role['name'], $role['firstname']);
             $idActor = BDD->lastInsertId();
-
             //Ajoute le rôle dans la BDD
             RoleDao::addOne($idMovie, $idActor, $role['character']);
 
