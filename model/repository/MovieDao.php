@@ -35,23 +35,33 @@ class MovieDao
         $query->execute(array(':title' => $title, ':year' => $year, ':poster' => $poster, ':director' => $director));
     }
 
+
+
     //Ajoute 1 film dans la BDD
     public static function createMovie($postData)
     {
-        if (empty($postData['title']) || empty($postData['year']) || empty($postData['poster']) || empty($postData['director']) || empty($postData['character']) || empty($postData['name']) || empty($postData['firstname'])) {
-            return false;
+        if (empty($postData['title']) || empty($postData['year']) || empty($postData['poster']) || empty($postData['director']) || empty($postData['roles']) || !is_array($postData['roles'])) {
+            return "Tous les champs doivent être remplis";
         }
 
-        // $actor = new Actor($postData['name'], $postData['firstname']);
-        // $role = new Role($postData['character'], $postData['actor']);
-        // $movie = new Movie($postData['title'], $postData['year'], $postData['poster'], $postData['director'], $role);
-
+        //Ajoute le film dans la BDD
         MovieDao::addOne($postData['title'], $postData['year'], $postData['poster'], $postData['director']);
         $idMovie = BDD->lastInsertId();
-        ActorDao::addOne($postData['name'], $postData['firstname']);
-        $idActor = BDD->lastInsertId();
-        RoleDao::addOne($idMovie, $idActor, $postData['character']);
 
-        return true;
+        //Parcourt chaque rôle dans le tableau
+        foreach ($postData['roles'] as $role) {
+            if (empty($role['character']) || empty($role['name']) || empty($role['firstname'])) {
+                return "Les informations d'un ou plusieurs rôles sont manquantes";
+            }
+
+            //Ajoute l'acteur dans la BDD    
+            ActorDao::addOne($postData['name'], $role['firstname']);
+            $idActor = BDD->lastInsertId();
+
+            //Ajoute le rôle dans la BDD
+            RoleDao::addOne($idMovie, $idActor, $role['character']);
+
+            return true;
+        }
     }
 }

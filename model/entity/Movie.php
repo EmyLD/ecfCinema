@@ -11,14 +11,14 @@ class Movie
 
 
 
-        public function __construct(int $id, string $title, string $director, string $poster, int $year, array $roles)
+        public function __construct(int $id, string $title, string $director, string $poster, int $year, array $roles = [])
         {
                 $this->id = $id;
                 $this->title = $title;
                 $this->director = $director;
                 $this->poster = $poster;
                 $this->year = $year;
-                $this->roles[] = $roles;
+                $this->roles = $roles;
         }
 
         /**
