@@ -14,7 +14,7 @@ if(isset($_POST['email']) && isset($_POST['password'])) {
         $user = UserDao::findOne($_POST["email"], $hash);
       
         if ($user) {
-            $_SESSION['username'] = $user['username'];
+            $_SESSION['username'] = $user->getUsername();
             header('Location: /ecfCinema/home');
             exit();
         }elseif($user == "not good"){

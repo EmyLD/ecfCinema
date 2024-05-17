@@ -18,7 +18,7 @@ $routes = [
     '/' => './controller/home.php',
     'home' => './controller/home.php',
     'login' => './controller/login.php',
-    // 'creer' => './controller/creer.php',
+    'register' => './controller/register.php',
     // 'delete' => './controller/delete.php',
     // 'update' => './controller/update.php',
 ];

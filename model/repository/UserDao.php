@@ -3,44 +3,50 @@
 
 
 namespace Model\repository;
-
+use Model\Entity\User;
 
  class UserDao 
 {
-    public static function findOne($email, $password)
+    public static function findOne($email, $password) : User | string
     {
         try {
             $querySql = 'SELECT * FROM user WHERE email = :email AND password = :password';
             $query = BDD->prepare($querySql);
             $query->execute(array('email'=> $email,'password'=> $password));
             $data = $query->fetch();
-            return $data;
-            // if(!$data) {
-            //     return 'not good';
-            // } else {
-            //     return new User( $data['id'], $data['username'], $data['email'], $data['password']);
-            // }
+            if(!$data) {
+                return 'not good';
+            } else {
+                $user= new User( $data['id'], $data['username'], $data['email'], $data['password']);
+                return $user;
+            }
         } catch (\Throwable $th) {
             throw $th;
         }
         
     }
 
-    // public static function register($data): User
-    //     {
-    //         $querySql = 
-    //         'INSERT INTO users (firstname, lastname, password) 
-    //         VALUES (:firstname, :lastname, :password)';
+    public static function addOne($username, $email, $password): bool 
+        {
+            try {
+                $querySql = 
+                'INSERT INTO user (username, email, password) 
+                VALUES (:username, :email, :password)';
+                $query = BDD->prepare($querySql);
 
-    //         $query = BDD->prepare($querySql);
-
-    //         $query->execute(
-    //             array(
-    //                 ':firstname' => $data['firstname'], 
-    //                 ':lastname' => $data['lastname'], 
-    //                 ':password' => $data['password']
-    //             ));
-
-    //         return new User($data['id'], $data['firstname'], $data['lastname'], $data['password']);
-    //     }
+                $isAdded = $query->execute(
+                    array(
+                        ':username' => $username, 
+                        ':email' => $email, 
+                        ':password' => $password
+                    ));
+                if(!$isAdded) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } catch (\Throwable $th) {
+                throw $th;
+            }
     }
+}
