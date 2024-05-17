@@ -31,6 +31,11 @@ class ActorDao
     public static function addOne(string $name, string $firstname)
     {
         $query = BDD->prepare('INSERT INTO actor (name, firstname) VALUES (:name, :firstname)');
-        $query->execute(array(':name' => $name, ':firstname' => $firstname));
+        $result = $query->execute(array(':name' => $name, ':firstname' => $firstname));
+        if ($result) {
+            return array("status" => "success", "message" => "Nouveau film bien enregistré");
+        } else {
+            return array ("status" => "error", "message" => "Erreur".implode(",".$query->errorInfo()));
+        }
     }
 }
