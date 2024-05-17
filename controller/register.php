@@ -11,7 +11,7 @@ echo $twig->render('register.html.twig');
 if(isset($_POST['email']) && isset($_POST['password']) && isset($_POST['username']) ){
     try {
         $hash = hash('sha256',$_POST['password']);
-        $isAdded = UserDao::addOne($username, $email, $hash);
+        $isAdded = UserDao::addOne($_POST['username'], $_POST['email'], $hash);
         
         if ($isAdded) {
             $_SESSION['username'] = $username;
