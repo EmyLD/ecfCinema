@@ -32,17 +32,17 @@
               <a class="nav-link" href="home">Accueil</a>
             </li>
             {% if session != null %}
-			<li class="nav-item">
-				<a class="nav-link" href="creer">Création</a>
-			</li>
-      <a href="disconnect">
-        <button class="btn btn-outline-light text-light" type="button" >Logout</button>
-      </a>
+              <li class="nav-item">
+                <a class="nav-link" href="creer">Création</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="logout">Déconnexion</a>
+              </li>
             {% else %}
-			<li class="nav-item">
-			  <a class="nav-link" href="login">Compte</a>
-			</li>
-			 {% endif %}
+              <li class="nav-item">
+                <a class="nav-link" href="login">Compte</a>
+              </li>
+            {% endif %}
           </ul>
 
           <form class="form-inline my-2 my-lg-0 h-100" style="height: 100%;">
