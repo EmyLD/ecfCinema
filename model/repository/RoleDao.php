@@ -61,6 +61,11 @@ class RoleDao
     public static function addOne(int $fk_movie, int $fk_actor, string $character)
     {
         $query = BDD->prepare('INSERT INTO role (fk_movie, fk_actor, character) VALUES (:fk_movie, :fk_actor, :character)');
-        $query->execute(array(':fk_movie' => $fk_movie, ':fk_actor' => $fk_actor, ':character' => $character));
+        $result = $query->execute(array(':fk_movie' => $fk_movie, ':fk_actor' => $fk_actor, ':character' => $character));
+        if ($result) {
+            return array("status" => "success", "message" => "Nouveau rôle bien enregistré");
+        } else {
+            return array ("status" => "error", "message" => "Erreur".implode(",".$query->errorInfo()));
+        }
     }
 }
