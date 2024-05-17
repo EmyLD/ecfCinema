@@ -1,8 +1,6 @@
 <?php
-
-require_once './model/repository/RoleDao.php';
-require_once './model/entity/Role.php';
-
+namespace Model\repository;
+use Model\Entity\Movie;
 class MovieDao
 {
 

@@ -1,13 +1,10 @@
 <?php
 
+namespace Model\repository;
 
 
-require_once './model/entity/Role.php';
-require_once './model/entity/Movie.php';
-require_once './model/entity/Actor.php';
-require_once './model/repository/MovieDao.php';
-require_once './model/repository/ActorDao.php';
-
+use Model\Entity\Role;
+use Model\Entity\Actor;
 class RoleDao
 {
 

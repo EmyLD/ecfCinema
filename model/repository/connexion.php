@@ -1,4 +1,5 @@
 <?php
+
 $username = getenv('DB_USER_USERNAME');
 $password = getenv('DB_USER_PASSWORD');
 

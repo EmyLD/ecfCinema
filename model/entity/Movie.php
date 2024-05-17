@@ -1,5 +1,7 @@
 <?php
 
+namespace Model\entity;
+
 class Movie
 {
         protected $id;
