@@ -11,10 +11,15 @@ require_once './model/entity/Role.php';
 $movies =  new MovieDao;
 $roles = new RoleDao;
 
+$session = null;
+
+if(isset($_SESSION['username'])){
+    $session = $_SESSION['username'];
+}
 
 echo $twig->render('home.html.twig',
 ['movies' => $movies,
 'roles' => $roles,
-'session' => $_SESSION['username']
+'session' => $session
 ]
 );
