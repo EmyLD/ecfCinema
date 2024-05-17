@@ -9,19 +9,19 @@ echo $twig->render('register.html.twig');
   
 
 if(isset($_POST['email']) && isset($_POST['password']) && isset($_POST['username']) ){
-    $email = $_POST['email']; 
-    $password = $_POST['password'];  
-    $username = $_POST['username'];
-    $hash = hash('sha256',$password);
-    echo $twig->render('register.html.twig', ['email'=>$email]);
-
-    $user = UserDao::addOne($username, $email, $hash);
-    
-    // if ($user) {
-    //     // $_SESSION['username'] = $username;
-    //     // header('Location: /ecfCinema/home');
-    //     // exit();
-    // }else {
+    try {
+        $hash = hash('sha256',$_POST['password']);
+        $isAdded = UserDao::addOne($username, $email, $hash);
         
+        if ($isAdded) {
+            $_SESSION['username'] = $username;
+            header('Location: /ecfCinema/home');
+            exit();
+        } else {
+            echo $twig->render('register.html.twig', ['error' => $error]);
+        } 
+    } catch (Exception $e) {
+        die ('Error : ' . $e->getMessage());
+    }
    
-} 
+}
