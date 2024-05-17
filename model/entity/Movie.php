@@ -1,5 +1,7 @@
 <?php
 
+namespace Model\entity;
+
 class Movie
 {
         protected $id;
@@ -11,7 +13,7 @@ class Movie
 
 
 
-        public function __construct(int $id, string $title, string $director, string $poster, int $year, array $roles = [])
+        public function __construct(?int $id, string $title, string $director, string $poster, int $year, array $roles = [])
         {
                 $this->id = $id;
                 $this->title = $title;

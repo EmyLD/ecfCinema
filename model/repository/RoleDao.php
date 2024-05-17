@@ -1,10 +1,12 @@
 <?php
 
-require_once './model/entity/Role.php';
-require_once './model/entity/Movie.php';
-require_once './model/entity/Actor.php';
-require_once './model/repository/MovieDao.php';
-require_once './model/repository/ActorDao.php';
+namespace Model\repository;
+
+use Model\entity\Role;
+use Model\entity\Movie;
+use Model\entity\Actor;
+use Model\repository\MovieDao;
+use Model\repository\ActorDao;
 
 class RoleDao
 {
@@ -62,10 +64,11 @@ class RoleDao
     {
         $query = BDD->prepare('INSERT INTO role (fk_movie, fk_actor, character) VALUES (:fk_movie, :fk_actor, :character)');
         $result = $query->execute(array(':fk_movie' => $fk_movie, ':fk_actor' => $fk_actor, ':character' => $character));
+
         if ($result) {
-            return array("status" => "success", "message" => "Nouveau rôle bien enregistré");
+            return true;
         } else {
-            return array ("status" => "error", "message" => "Erreur".implode(",".$query->errorInfo()));
+            return false;
         }
     }
 }

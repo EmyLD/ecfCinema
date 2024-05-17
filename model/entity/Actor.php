@@ -1,12 +1,14 @@
 <?php
 
+namespace Model\entity;
+
 class Actor
 {
         protected $id;
         private $name;
         private $firstName;
 
-        public function __construct(int $id, string $name, string $firstName)
+        public function __construct(?int $id, string $name, string $firstName)
         {
                 $this->id = $id;
                 $this->name = $name;

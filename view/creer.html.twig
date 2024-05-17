@@ -19,10 +19,10 @@
                             <h5>Titre</h5><br>
                         </label>
                         <input class="col-5" type="text" placeholder="Renseignez le titre" name="title">
-                        <label for="year">
+                        <label for="years">
                             <h5>Année</h5><br>
                         </label>
-                        <input class="col-5" type="text" placeholder="Renseignez l'année" name="year">
+                        <input class="col-5" type="text" placeholder="Renseignez l'année" name="years">
                     </div>
                     <label for="poster">
                         <h5>Affiche</h5>
@@ -79,15 +79,15 @@
                 <label for="character${roleCount}">
                     <b>Personnage</b>
                 </label>
-                <input type="text" placeholder="Enter Character" name="character[]" required>
+                <input type="text" placeholder="Renseignez un personnage" name="character[]" required>
                 <label for="name${roleCount}">
                     <b>Nom</b>
                 </label>
-                <input type="text" placeholder="Enter Name" name="name[]" required>
+                <input type="text" placeholder="Renseignez un nom" name="name[]" required>
                 <label for="firstname${roleCount}">
                     <b>Prénom</b>
                 </label>
-                <input type="text" placeholder="Enter Firstname" name="firstname[]" required>
+                <input type="text" placeholder="Renseignez un prénom" name="firstname[]" required>
                 <button type="button" onclick="removeRole(${roleCount})">Supprimer</button>
             </div>
         `;

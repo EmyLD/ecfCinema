@@ -1,9 +1,13 @@
 <?php
 
+namespace Model\repository;
+
+use Model\entity\Actor;
+
 class ActorDao
 {
     //Récupère tous les acteurs
-    public static function getAll()
+    public static function getAll(): array
     {
         $query = BDD->prepare('SELECT * FROM actor');
         $query->execute();
@@ -15,7 +19,7 @@ class ActorDao
     }
 
     //Récupére 1 acteur
-    public static function getOne(int $id): ?Actor
+    public static function getOne(int $id): Actor
     {
         $query = BDD->prepare('SELECT * FROM actor WHERE id = :id_actor');
         $query->execute(array(':id_actor' => $id));
@@ -28,14 +32,15 @@ class ActorDao
     }
 
     //Ajoute 1 acteur
-    public static function addOne(string $name, string $firstname)
+    public static function addOne(string $name, string $firstname): bool
     {
         $query = BDD->prepare('INSERT INTO actor (name, firstname) VALUES (:name, :firstname)');
         $result = $query->execute(array(':name' => $name, ':firstname' => $firstname));
+
         if ($result) {
-            return array("status" => "success", "message" => "Nouveau film bien enregistré");
+            return true;
         } else {
-            return array ("status" => "error", "message" => "Erreur".implode(",".$query->errorInfo()));
+            return false;
         }
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+namespace Model\entity;
+
 class Role
 
 {
@@ -7,7 +9,7 @@ class Role
         private $character;
         private $actor;
 
-        public function __construct(int $id, string $character, Actor $actor)
+        public function __construct(?int $id, string $character, Actor $actor)
         {
                 $this->id = $id;
                 $this->character = $character;

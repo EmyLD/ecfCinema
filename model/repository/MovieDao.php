@@ -1,7 +1,10 @@
 <?php
 
-require_once './model/repository/RoleDao.php';
-require_once './model/entity/Role.php';
+namespace Model\repository;
+
+use Model\repository\RoleDao;
+use Model\entity\Role;
+use Model\entity\Movie;
 
 class MovieDao
 {
@@ -14,7 +17,7 @@ class MovieDao
         $movies = array();
         while ($data = $query->fetch()) {
             $roles = RoleDao::getByMovie($data['id']);
-            $movies[] = new Movie($data['id'], $data['title'], $data['director'], $data['poster'], $data['year'], $roles);
+            $movies[] = new Movie($data['id'], $data['title'], $data['director'], $data['poster'], $data['years'], $roles);
         }
         return $movies;
     }
@@ -26,26 +29,26 @@ class MovieDao
         $query->execute(array(':id_movie' => $id));
         $data = $query->fetch();
         $roles = RoleDao::getByMovie($data['id']);
-        return new Movie($data['id'], $data['title'], $data['director'], $data['poster'], $data['year'], $roles);
+        return new Movie($data['id'], $data['title'], $data['director'], $data['poster'], $data['years'], $roles);
     }
 
-    public static function addOne(string $title, int $year, string $poster, string $director)
+    public static function addOne(string $title, int $years, string $poster, string $director)
     {
-        $query = BDD->prepare('INSERT INTO movie (title, year, poster, director) VALUES (:title, :year, :poster, :director)');
-        $query->execute(array(':title' => $title, ':year' => $year, ':poster' => $poster, ':director' => $director));
+        $query = BDD->prepare('INSERT INTO movie (title, years, poster, director) VALUES (:title, :years, :poster, :director)');
+        $result = $query->execute(array(':title' => $title, ':years' => $years, ':poster' => $poster, ':director' => $director));
+
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
     }
-
-
 
     //Ajoute 1 film dans la BDD
-    public static function createMovie($title, $year, $poster, $director)
+    public static function createMovie($title, $years, $poster, $director)
     {
-        // if (empty($_POST['title']) || empty($_POST['year']) || empty($_POST['poster']) || empty($_POST['director']) || empty($_POST['roles']) || !is_array($_POST['roles'])) {
-        //     return "Tous les champs doivent être remplis";
-        // }
-
         //Ajoute le film dans la BDD
-        MovieDao::addOne($title, $year, $poster, $director);
+        MovieDao::addOne($title, $years, $poster, $director);
         $idMovie = BDD->lastInsertId();
 
         //Parcourt chaque rôle dans le tableau
