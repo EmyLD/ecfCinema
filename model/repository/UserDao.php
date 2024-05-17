@@ -1,19 +1,46 @@
 <?php
 
+
+
+namespace Model\repository;
+
+
  class UserDao 
 {
-    public static function getOne(int $id): User
+    public static function findOne($email, $password)
     {
-        $query = BDD->prepare('SELECT * FROM users WHERE id = :id_user');
-        $query->execute(array(':id_user' => $id));
-        $data = $query->fetch();
-        return new Actor($data['id'], $data['name'], $data['firstname']);
+        try {
+            $querySql = 'SELECT * FROM user WHERE email = :email AND password = :password';
+            $query = BDD->prepare($querySql);
+            $query->execute(array('email'=> $email,'password'=> $password));
+            $data = $query->fetch();
+            return $data;
+            // if(!$data) {
+            //     return 'not good';
+            // } else {
+            //     return new User( $data['id'], $data['username'], $data['email'], $data['password']);
+            // }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        
     }
 
-    public static function addOne($data): User
-        $hashPassword = password_hash($data['password'], PASSWORD_DEFAULT);
-        {
-        $query = BDD->prepare('INSERT INTO users (firstname, lastname, password) VALUES (:firstname, :lastname, :password)');
-        return $query->execute(array(':firstname' => $data['firstname'], ':lastname' => $data['lastname'], ':password' => $hashPassword));
-        }
+    // public static function register($data): User
+    //     {
+    //         $querySql = 
+    //         'INSERT INTO users (firstname, lastname, password) 
+    //         VALUES (:firstname, :lastname, :password)';
+
+    //         $query = BDD->prepare($querySql);
+
+    //         $query->execute(
+    //             array(
+    //                 ':firstname' => $data['firstname'], 
+    //                 ':lastname' => $data['lastname'], 
+    //                 ':password' => $data['password']
+    //             ));
+
+    //         return new User($data['id'], $data['firstname'], $data['lastname'], $data['password']);
+    //     }
     }

@@ -1,11 +1,13 @@
 <div>
-		<div>
-			<form method="post">
-				<div class="container">
-					<p> coucou <p>
-
-				</div>
-			</form>
-		</div>
-	
+  <div>
+    <form method="post">
+      <div class="container">
+        <h1>Home</h1>
+        {% if session %}
+        <p class="session">{{ session }}</p>
+        {% endif %}
+        <p></p>
+      </div>
+    </form>
+  </div>
 </div>
