@@ -25,7 +25,7 @@ if(isset($_POST['email']) && isset($_POST['password']) && isset($_POST['username
             
             if ($isAdded) {
                 $_SESSION['username'] = $capUsername;
-                header('Location: home');
+                header('Location: home.php');
                 exit();
             } else {
                 echo $template->renderBlock('error',  [ 'type' => "Merci de bien vouloir vérifier les champs."]);

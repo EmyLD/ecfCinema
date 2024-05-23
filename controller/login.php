@@ -17,7 +17,7 @@ if(empty($_SESSION['username'])) {
 if(isset($_POST['email']) && isset($_POST['password'])) {
     try {
         $hashed = password_hash( $_POST['password'], PASSWORD_BCRYPT);
-        $user = UserDao::findOne($_POST["email"], $_POST['password']);
+        $user = UserDao::findOne($_POST["email"], $hashed);
       
         if ($user) {
             $_SESSION['username'] =  $user;
