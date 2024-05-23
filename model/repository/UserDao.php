@@ -3,22 +3,21 @@
 
 
 namespace Model\repository;
-use Model\Entity\User;
 
  class UserDao 
 {
-    public static function findOne($email, $password) : User | string
+    public static function findOne($email, $password) : string  
     {
         try {
             $querySql = 'SELECT * FROM user WHERE email = :email AND password = :password';
             $query = BDD->prepare($querySql);
             $query->execute(array('email'=> $email,'password'=> $password));
             $data = $query->fetch();
-            if(!$data) {
-                return 'not good';
+            if($data) {
+               $user = $data['username'];
+               return $user;
             } else {
-                $user= new User( $data['id'], $data['username'], $data['email'], $data['password']);
-                return $user;
+              return false;
             }
         } catch (\Throwable $th) {
             throw $th;

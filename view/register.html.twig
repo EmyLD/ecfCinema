@@ -13,29 +13,57 @@
           class="d-flex flex-column justify-content-center align-self-center"
         >
             <h1>Register</h1>
+      
+                <form action="register" method="post">
+                  <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                    <small id="usernameHelp" class="form-text text-muted font-italic">Usernames can contain any letters or numbers, without spaces.</small>
 
-            {% if email %}
+                  </div>
+                  <div class="form-group">
+                      <label for="email">Email</label>
+                      <input type="email" class="form-control" id="email"  name="email"  required>
+                      <small id="emailHelp" class="form-text text-muted font-italic">Please provide your E-mail</small>
+                    </div>
+
+                  <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password"  required>
+                    <small id="pwdHelp" class="form-text text-muted font-italic">Password should be at least 4 characters.</small>
+
+                  </div>
+
+
+                  <div class="form-group">
+                    <label for="confirmPassword">Password (confirm)</label>
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"  required>
+                    <small id="pwdConfirmHelp" class="form-text text-muted font-italic">Please confirm password</small>
+
+                  </div>
+        
+                  <input type="submit" class="btn btn-success" value="Register">
+                </form>
+          
+
+                <a href="login">Déjà un compte ?</a>
+            
+
+            {% block error %}
+            {% if type %}
               <div class="alert alert-danger" role="alert">
-                {{ email }}
+                  {{type}}
               </div>
             {% else %}
-                <form action="register" method="post">
-                      <div class="form-group">
-                        <label for="username">Username</label>
-                        <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
-                      </div>
-                      <div class="form-group">
-                          <label for="email">Email</label>
-                          <input type="email" class="form-control" id="email"  name="email" placeholder="Enter email" required>
-                        </div>
-                      <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
-                      </div>
-            
-                      <input type="submit"  value="S'enregistrer">
-                    </form>
+            <div>
+              
+          </div>
             {% endif %}
+            
+            
+            {% endblock %}
+
+           
 
           </div>
         </div>
