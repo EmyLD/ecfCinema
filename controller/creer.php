@@ -54,14 +54,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Ajout du film dans la BDD
             MovieDao::addOne($movie);
-            $idMovie = BDD->lastInsertId();
-
-            foreach ($roles as $role) {
-                $actor = $role->getActor();
-                ActorDao::addOne($actor->getName(), $actor->getFirstname());
-                $idActor = BDD->lastInsertId();
-                RoleDao::addOne($idMovie, $idActor, $role->getCharacter());
-            }
 
             echo "Film, acteurs et rôles ajoutés avec succès !";
         }

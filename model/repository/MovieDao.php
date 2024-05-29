@@ -38,6 +38,15 @@ class MovieDao
         $query = BDD->prepare('INSERT INTO movie (title, year, poster, director) VALUES (:title, :year, :poster, :director)');
         $result = $query->execute(array(':title' => $movie->getTitle(), ':year' => $movie->getYear(), ':poster' => $movie->getPoster(), ':director' => $movie->getDirector()));
 
+        $idMovie = BDD->lastInsertId();
+
+        foreach ($movie->getRoles() as $role) {
+            $actor = $role->getActor();
+            ActorDao::addOne($actor->getName(), $actor->getFirstname());
+            $idActor = BDD->lastInsertId();
+            RoleDao::addOne($idMovie, $idActor, $role->getCharacter());
+        }
+
         if ($result) {
             return true;
         } else {
