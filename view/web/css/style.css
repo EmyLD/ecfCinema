@@ -1,13 +1,11 @@
-header{
-    height: 5%; 
-    margin-bottom: 50px;
+header {
+  height: 5%;
+  margin-bottom: 50px;
 }
 
-header form  {
-    height: 100%;
-    
+header form {
+  height: 100%;
 }
-body{
-    height: 94vh;
-    background-color: blue ;
+body {
+  height: 94vh;
 }
