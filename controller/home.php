@@ -13,15 +13,8 @@ if(isset($_POST['search'])){
 }
 
 
-$session = null;
-
-if(isset($_SESSION['username'])){
-    $session = $_SESSION['username'];
-}
-
 echo $twig->render('home.html.twig',
-['movies' => $movies,
-'session' => $session
+['movies' => $movies
 ]
 );
 
