@@ -62,7 +62,7 @@ class RoleDao
     //Ajoute un rôle dans la BDD
     public static function addOne(int $fk_movie, int $fk_actor, string $character)
     {
-        $query = BDD->prepare('INSERT INTO role (fk_movie, fk_actor, character) VALUES (:fk_movie, :fk_actor, :character)');
+        $query = BDD->prepare('INSERT INTO role (fk_movie, fk_actor, `character`) VALUES (:fk_movie, :fk_actor, :character)');
         $result = $query->execute(array(':fk_movie' => $fk_movie, ':fk_actor' => $fk_actor, ':character' => $character));
 
         if ($result) {

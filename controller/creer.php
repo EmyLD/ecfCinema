@@ -1,5 +1,7 @@
 <?php
 
+require_once "Model/repository/connexion.php";
+
 use Model\repository\MovieDao;
 use Model\repository\ActorDao;
 use Model\repository\RoleDao;
@@ -13,11 +15,11 @@ echo $twig->render('creer.html.twig', ['erreur' => 404]);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Vérifie si tous les champs nécessaires sont présents
-    if (isset($_POST['title'], $_POST['years'], $_POST['poster'], $_POST['director'], $_POST['character'], $_POST['name'], $_POST['firstname'])) {
+    if (isset($_POST['title'], $_POST['year'], $_POST['poster'], $_POST['director'], $_POST['character'], $_POST['name'], $_POST['firstname'])) {
         
         // Récupération des données du formulaire
         $title = $_POST['title'];
-        $years = $_POST['years'];
+        $year = $_POST['year'];
         $poster = $_POST['poster'];
         $director = $_POST['director'];
         $characters = $_POST['character'];
@@ -27,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Vérification des champs (ici, juste un exemple basique)
         if (empty($title)) {
             echo "Veuillez renseigner un titre";
-        } elseif (empty($years)) {
+        } elseif (empty($year)) {
             echo "Veuillez renseigner une année";
         } elseif (empty($poster)) {
             echo "Veuillez ajouter une affiche";
@@ -48,8 +50,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $roles[] = $role;
             }
 
+            $movie = new Movie(null, $_POST['title'], $_POST['director'], $_POST['poster'], $_POST['year'], $roles);
+
             // Ajout du film dans la BDD
-            MovieDao::addOne($title, $years, $poster, $director);
+            MovieDao::addOne($movie);
             $idMovie = BDD->lastInsertId();
 
             foreach ($roles as $role) {
@@ -140,7 +144,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 // //     $roles = [];
 // //     for ($i=0; $i < count($_POST['character']) ; $i++) { 
-// //         $acteur = new Actor(null, $_POST['name'][$i], $_POST['firstname'][$i]);
+// //         $actor = new Actor(null, $_POST['name'][$i], $_POST['firstname'][$i]);
 // //         $role = new Role(null, $actor, $_POST['character'][$i]);
 // //         $roles[] = $role;
 // //     }
