@@ -1,25 +1,31 @@
 <?php
-
-
 require_once './model/repository/connexion.php';
 
-use Model\repository\UserDAO;
+use Model\repository\UserDao;
 
-echo $twig->render('login.html.twig');
+
+if(empty($_SESSION['username'])) {
+    $template = $twig->load('login.html.twig');
+    echo $twig->render($template);
+   
+} else {
+    header('Location: home');
+}
+
 
 
 if(isset($_POST['email']) && isset($_POST['password'])) {
     try {
-        $hash = hash('sha256', $_POST['password']);
-        $user = UserDao::findOne($_POST["email"], $hash);
+        $hashed = password_hash( $_POST['password'], PASSWORD_BCRYPT);
+        $user = UserDao::findOne($_POST["email"], $hashed);
       
         if ($user) {
-            $_SESSION['username'] = $user->getUsername();
-            header('Location: /ecfCinema/home');
+            $_SESSION['username'] =  $user;
+            header('Location: home');
             exit();
-        }elseif($user == "not good"){
+        }elseif(empty($user)){
             $error = 'Identifiant ou mot de passe incorrect';
-            echo $twig->render('login.html.twig', ['error' => $error]);
+            echo $template->renderBlock('error',  [ 'type' => $error]);
         } 
         
     } catch (Exception $e) {

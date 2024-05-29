@@ -20,7 +20,7 @@ class Movie
                 $this->director = $director;
                 $this->poster = $poster;
                 $this->year = $year;
-                $this->roles[] = $roles;
+                $this->roles = $roles;
         }
 
         /**

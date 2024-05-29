@@ -12,35 +12,38 @@
           style="height: 100%"
           class="d-flex flex-column justify-content-center align-self-center"
         >
-          <!-- Carousel Start -->
-          <div class="container-fluid" style="height: 60%">
-            {% if error %}
-            <h1>Login</h1>
-            <form action="login" method="post">
-              <label for="email">Email:</label>
-              <input type="text" id="email" name="email" required />
+            <h1>Identification</h1>
+      
+              <form action="login" method="post">
+                
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="email" class="form-control" id="email"  name="email"  required>
+                  <small id="emailHelp" class="form-text text-muted font-italic">Please provide your E-mail</small>
+                </div>
 
-              <label for="password">Password:</label>
-              <input type="password" id="password" name="password" required />
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <input type="password" class="form-control" id="password" name="password"  required>
+                  <small id="pwdHelp" class="form-text text-muted font-italic">Password should be at least 4 characters.</small>
+                </div>
+                
+                <input type="submit" class="btn btn-success" value="Login">
+              </form>
+          
+              <a href="register">Pas encore de compte ?</a>
+            
 
-              <input type="submit" value="Login" />
-            </form>
-            <p class="error">{{ error }}</p>
-
-            {% else %}
-            <h1>Login</h1>
-            <form action="login" method="post">
-              <label for="email">Email:</label>
-              <input type="text" id="email" name="email" required />
-
-              <label for="password">Password:</label>
-              <input type="password" id="password" name="password" required />
-
-              <input type="submit" value="Login" />
-            </form>
-            {% endif %}
-
-            <p>Pas encore de compte ? <a href="register">C'est ici</a></p>
+              {% block error %}
+                {% if type %}
+                  <div class="alert alert-danger" role="alert">
+                      {{type}}
+                  </div>
+                {% else %}
+                  <div> 
+                  </div>
+                {% endif %}
+              {% endblock %}
           </div>
         </div>
       </div>

@@ -51,9 +51,5 @@ class RoleDao
          return ActorDao::getOne($data['fk_actor']);;
      }
 
-    // public static function addOne($data): bool
-    // {
-       
-    // }
-
+ 
 }

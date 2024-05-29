@@ -3,7 +3,7 @@
   <head>
     <title>Accueil</title>
   </head>
-  <body style="height: 94vh">
+  <body>
     <main style="height: 75%">
       <div
         style="height: 100%"
@@ -18,8 +18,8 @@
           >
             <div class="carousel-inner">
               {# Caroussel pour affichage des véhicules #} {% for item in
-              movies.getAll() %} {% set current_movie = item %}
-
+              movies %} {% set current_movie = item %}
+                
               <div class="carousel-item {{ loop.first ? 'active' : '' }}">
                 <div class="container">
                   <div
@@ -37,15 +37,15 @@
                         <strong>{{ item.getDirector }}</strong>
                       </p>
 
-                      {% for item in roles.getByMovie(current_movie.getId()) %}
-                      {%set name = item.getActor().getName() %} {% set firstName
-                      = item.getActor().getFirstName() %} {% set current_actor =
+                      {% for role in item.getRoles %}
+                      {% set name = role.getActor().getName() %} {% set firstName
+                      = role.getActor().getFirstName() %} {% set current_actor =
                       name ~ " " ~ firstName %}
 
                       <p>
                         avec <strong>{{ current_actor }}</strong> dans le role
                         de
-                        <strong>{{ item.getCharacter }}</strong>
+                        <strong>{{ role.getCharacter }}</strong>
                       </p>
 
                       {% endfor %}
