@@ -1,0 +1,12 @@
+header {
+    height: 5%;
+    margin-bottom: 50px;
+}
+
+header form {
+    height: 100%;
+}
+
+body {
+    height: 94vh;
+}

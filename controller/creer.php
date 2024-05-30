@@ -50,18 +50,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $roles[] = $role;
             }
 
-            $movie = new Movie(null, $_POST['title'], $_POST['director'], $_POST['poster'], $_POST['year'], $roles);
+            $movie = new Movie(null, $title, $director, $poster, $year, $roles);
 
             // Ajout du film dans la BDD
-            MovieDao::addOne($movie);
+            $result = MovieDao::addOne($movie);
 
-            echo "Film, acteurs et rôles ajoutés avec succès !";
+            if ($result['status']) {
+                echo $result['message'];
+            } else {
+                echo "Erreur : " . $result['message'];
+            }
         }
     } else {
         echo "Tous les champs du formulaire doivent être remplis.";
     }
 }
-
 
 
 

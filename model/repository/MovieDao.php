@@ -6,6 +6,7 @@ use Model\repository\RoleDao;
 use Model\entity\Role;
 use Model\entity\Movie;
 use Model\repository\connexion;
+use Exception;
 
 class MovieDao
 {
@@ -35,22 +36,41 @@ class MovieDao
 
     public static function addOne($movie)
     {
-        $query = BDD->prepare('INSERT INTO movie (title, year, poster, director) VALUES (:title, :year, :poster, :director)');
-        $result = $query->execute(array(':title' => $movie->getTitle(), ':year' => $movie->getYear(), ':poster' => $movie->getPoster(), ':director' => $movie->getDirector()));
-
-        $idMovie = BDD->lastInsertId();
-
-        foreach ($movie->getRoles() as $role) {
-            $actor = $role->getActor();
-            ActorDao::addOne($actor->getName(), $actor->getFirstname());
-            $idActor = BDD->lastInsertId();
-            RoleDao::addOne($idMovie, $idActor, $role->getCharacter());
-        }
-
-        if ($result) {
-            return true;
-        } else {
-            return false;
+        try {
+            $query = BDD->prepare('INSERT INTO movie (title, year, poster, director) VALUES (:title, :year, :poster, :director)');
+            $result = $query->execute(array(
+                ':title' => $movie->getTitle(),
+                ':year' => $movie->getYear(),
+                ':poster' => $movie->getPoster(),
+                ':director' => $movie->getDirector()
+            ));
+    
+            if (!$result) {
+                return array('status' => false, 'message' => 'Erreur lors de l\'ajout du film.');
+            }
+    
+            $idMovie = BDD->lastInsertId();
+    
+            foreach ($movie->getRoles() as $role) {
+                $actor = $role->getActor();
+                $actorAdded = ActorDao::addOne($actor->getName(), $actor->getFirstname());
+    
+                if (!$actorAdded) {
+                    return array('status' => false, 'message' => 'Erreur lors de l\'ajout de l\'acteur.');
+                }
+    
+                $idActor = BDD->lastInsertId();
+                $roleAdded = RoleDao::addOne($idMovie, $idActor, $role->getCharacter());
+    
+                if (!$roleAdded) {
+                    return array('status' => false, 'message' => 'Erreur lors de l\'ajout du rôle.');
+                }
+            }
+    
+            return array('status' => true, 'message' => 'Film, acteurs et rôles ajoutés avec succès !');
+    
+        } catch (Exception $e) {
+            return array('status' => false, 'message' => 'Erreur: ' . $e->getMessage());
         }
     }
 
