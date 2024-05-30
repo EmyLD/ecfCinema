@@ -20,6 +20,7 @@ $routes = [
     'creer' => './controller/creer.php',
     'login' => './controller/login.php',
     'register' => './controller/register.php',
+    'logout' => './controller/logout.php',
     // 'delete' => './controller/delete.php',
     // 'update' => './controller/update.php',git 
 ];
