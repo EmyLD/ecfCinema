@@ -19,12 +19,20 @@ CREATE TABLE `movie` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 
+
+
+
+
+
 CREATE TABLE `actor` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(100) NOT NULL,
     `firstname` VARCHAR(100) NOT NULL,
       PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
 
 
 CREATE TABLE `user` (
@@ -34,6 +42,7 @@ CREATE TABLE `user` (
     `password` VARCHAR(100) NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
 
 
 CREATE TABLE `role` (

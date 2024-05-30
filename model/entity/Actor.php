@@ -1,4 +1,5 @@
 <?php
+namespace Model\entity;
 
 namespace Model\entity;
 
