@@ -19,8 +19,9 @@ $routes = [
     'home' => './controller/home.php',
     'creer' => './controller/creer.php',
     'login' => './controller/login.php',
+    'register' => './controller/register.php',
     // 'delete' => './controller/delete.php',
-    // 'update' => './controller/update.php',
+    // 'update' => './controller/update.php',git 
 ];
 
 $controller = isset($_GET['action']) ?  $_GET['action'] : '/';
