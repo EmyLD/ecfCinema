@@ -10,11 +10,11 @@ use Model\repository\connexion;
 class MovieDao
 {
 
-    //Récupère tous les films
-    public static function getAll()
+    public static function getAll($search = "")
     {
-        $query = BDD->prepare('SELECT * FROM movie');
-        $query->execute();
+        $query = BDD->prepare('SELECT * FROM movie WHERE movie.title like :search');
+        $search = '%' . $search . '%';
+        $query->execute(array(':search' => $search));
         $movies = array();
         while ($data = $query->fetch()) {
             $roles = RoleDao::getByMovie($data['id']);

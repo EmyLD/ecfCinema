@@ -17,7 +17,7 @@ require './config/init.php';
 $routes = [
     '/' => './controller/home.php',
     'home' => './controller/home.php',
-    'creer' => './controller/creer.php',
+    // 'creer' => './controller/creer.php',
     // 'delete' => './controller/delete.php',
     // 'update' => './controller/update.php',
 ];

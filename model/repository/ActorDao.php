@@ -1,4 +1,6 @@
 <?php
+namespace Model\repository;
+use Model\Entity\Actor;
 
 namespace Model\repository;
 
