@@ -1,8 +1,9 @@
 <?php 
-require_once './model/repository/connexion.php';
+
 
 use Model\repository\UserDao;
 
+$UserDao = new UserDao();
 
 if(empty($_SESSION['username'])) {
     $template = $twig->load('register.html.twig');
@@ -21,7 +22,7 @@ if(isset($_POST['email']) && isset($_POST['password']) && isset($_POST['username
             $hashed = password_hash( $_POST['password'], PASSWORD_BCRYPT);
             $cleanUsername = htmlspecialchars($_POST['username']);
             $capUsername= ucfirst($cleanUsername);
-            $isAdded = UserDao::addOne($capUsername, $_POST['email'], $hashed);
+            $isAdded = $UserDao->addOne($capUsername, $_POST['email'], $hashed);
             
             if ($isAdded) {
                 $_SESSION['username'] = $capUsername;

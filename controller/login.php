@@ -1,8 +1,9 @@
 <?php
-require_once './model/repository/connexion.php';
+
 
 use Model\repository\UserDao;
 
+$UserDao = new UserDao();
 
 if(empty($_SESSION['username'])) {
     $template = $twig->load('login.html.twig');
@@ -16,8 +17,9 @@ if(empty($_SESSION['username'])) {
 
 if(isset($_POST['email']) && isset($_POST['password'])) {
     try {
+        
         $hashed = password_hash( $_POST['password'], PASSWORD_BCRYPT);
-        $user = UserDao::findOne($_POST["email"], $hashed);
+        $user = $UserDao->findOne($_POST["email"], $hashed);
       
         if ($user) {
             $_SESSION['username'] =  $user;

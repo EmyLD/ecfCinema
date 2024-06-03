@@ -3,12 +3,14 @@
 namespace Model\repository;
 
 use Model\repository\RoleDao;
+use Model\repository\ActorDao;
 use Model\entity\Movie;
 use Model\repository\Dao;
 use Exception;
 
 class MovieDao extends Dao
 {
+    
     public function __construct()
     {
         parent::__construct();
@@ -16,12 +18,13 @@ class MovieDao extends Dao
 
     public function getAll($search = "")
     {
+        $RoleDao = new RoleDao();
         $query = $this->pdo->prepare('SELECT * FROM movie WHERE movie.title like :search');
         $search = '%' . $search . '%';
         $query->execute(array(':search' => $search));
         $movies = array();
         while ($data = $query->fetch()) {
-            $roles = RoleDao::getByMovie($data['id']);
+            $roles = $RoleDao->getByMovie($data['id']);
             $movies[] = new Movie($data['id'], $data['title'], $data['director'], $data['poster'], $data['year'], $roles);
         }
         return $movies;
@@ -29,15 +32,18 @@ class MovieDao extends Dao
 
     public function getOne(int $id): Movie
     {
+        $RoleDao = new RoleDao();
         $query = $this->pdo->prepare('SELECT * FROM movie WHERE id = :id_movie');
         $query->execute(array(':id_movie' => $id));
         $data = $query->fetch();
-        $roles = RoleDao::getByMovie($data['id']);
+        $roles = $RoleDao->getByMovie($data['id']);
         return new Movie($data['id'], $data['title'], $data['director'], $data['poster'], $data['years'], $roles);
     }
 
     public function addOne($movie)
     {
+        $ActorDao = new ActorDao();
+        $RoleDao = new RoleDao();
         try {
             $query = $this->pdo->prepare('INSERT INTO movie (title, year, poster, director) VALUES (:title, :year, :poster, :director)');
             $result = $query->execute(array(
@@ -55,14 +61,14 @@ class MovieDao extends Dao
     
             foreach ($movie->getRoles() as $role) {
                 $actor = $role->getActor();
-                $actorAdded = ActorDao::addOne($actor->getName(), $actor->getFirstname());
+                $actorAdded = $ActorDao->addOne($actor->getName(), $actor->getFirstname());
     
                 if (!$actorAdded) {
                     return array('status' => false, 'message' => 'Erreur lors de l\'ajout de l\'acteur.');
                 }
     
                 $idActor = $this->pdo->lastInsertId();
-                $roleAdded = RoleDao::addOne($idMovie, $idActor, $role->getCharacter());
+                $roleAdded = $RoleDao->addOne($idMovie, $idActor, $role->getCharacter());
     
                 if (!$roleAdded) {
                     return array('status' => false, 'message' => 'Erreur lors de l\'ajout du rôle.');

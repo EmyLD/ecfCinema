@@ -10,7 +10,7 @@ class SPDO
     private function __construct()
     {
         try {
-            $this->PDOInstance = new \PDO("mysql:host=localhost:3306;dbname=offres", "root", "");
+            $this->PDOInstance = new \PDO("mysql:host=localhost:3306;dbname=ecf_cinema", "root", "");
             $this->PDOInstance->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             $this->PDOInstance->exec("SET NAMES UTF8");
         } catch (\PDOException $e) {
