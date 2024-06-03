@@ -60,17 +60,31 @@ class RoleDao extends Dao
             return null;
         }
     }
+    
+    // Vérifie si un rôle existe déjà
+    public function roleExists(int $fk_movie, int $fk_actor, string $character): ?Role
+    {
+        $ActorDao = new ActorDao();
+        $query = $this->pdo->prepare('SELECT * FROM role WHERE fk_movie = :fk_movie AND fk_actor = :fk_actor AND `character` = :character');
+        $query->execute(array(':fk_movie' => $fk_movie, ':fk_actor' => $fk_actor, ':character' => $character));
+        $data = $query->fetch();
+        if ($data) {
+            return new Role($data['id'], $data['character'], $ActorDao->getOne($data['fk_actor']));
+        } else {
+            return null;
+        }
+    }
 
-    //Ajoute un rôle dans la BDD
+    // Ajoute un rôle dans la BDD
     public function addOne(int $fk_movie, int $fk_actor, string $character)
     {
+        if (self::roleExists($fk_movie, $fk_actor, $character)) {
+            return false; // Le rôle existe déjà
+        }
+
         $query = $this->pdo->prepare('INSERT INTO role (fk_movie, fk_actor, `character`) VALUES (:fk_movie, :fk_actor, :character)');
         $result = $query->execute(array(':fk_movie' => $fk_movie, ':fk_actor' => $fk_actor, ':character' => $character));
 
-        if ($result) {
-            return true;
-        } else {
-            return false;
-        }
+        return $result ? true : false;
     }
 }

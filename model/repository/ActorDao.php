@@ -32,16 +32,30 @@ class ActorDao extends Dao
         }
     }
 
+    //Vérifie si un acteur existe déjà
+    public function actorExists(string $name, string $firstname): ?Actor
+    {
+        $query = $this->pdo->prepare('SELECT * FROM actor WHERE name = :name AND firstname = :firstname');
+        $query->execute(array(':name' => $name, ':firstname' => $firstname));
+        $data = $query->fetch();
+        if ($data) {
+            return new Actor($data['id'], $data['name'], $data['firstname']);
+        } else {
+            return null;
+        }
+    }
+
     //Ajoute 1 acteur
     public function addOne(string $name, string $firstname): bool
     {
         $query = $this->pdo->prepare('INSERT INTO actor (name, firstname) VALUES (:name, :firstname)');
+        if (self::actorExists($name, $firstname)) {
+            return false; // L'acteur existe déjà
+        }
+
+        $query = $this->pdo->prepare('INSERT INTO actor (name, firstname) VALUES (:name, :firstname)');
         $result = $query->execute(array(':name' => $name, ':firstname' => $firstname));
 
-        if ($result) {
-            return true;
-        } else {
-            return false;
-        }
+        return $result ? true : false;
     }
 }
