@@ -64,11 +64,12 @@ class RoleDao extends Dao
     // Vérifie si un rôle existe déjà
     public function roleExists(int $fk_movie, int $fk_actor, string $character): ?Role
     {
+        $ActorDao = new ActorDao();
         $query = $this->pdo->prepare('SELECT * FROM role WHERE fk_movie = :fk_movie AND fk_actor = :fk_actor AND `character` = :character');
         $query->execute(array(':fk_movie' => $fk_movie, ':fk_actor' => $fk_actor, ':character' => $character));
         $data = $query->fetch();
         if ($data) {
-            return new Role($data['id'], $data['character'], ActorDao::getOne($data['fk_actor']));
+            return new Role($data['id'], $data['character'], $ActorDao->getOne($data['fk_actor']));
         } else {
             return null;
         }

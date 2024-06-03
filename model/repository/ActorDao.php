@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Model\repository;
 use Model\repository\Dao;
 use Model\entity\Actor;
@@ -47,6 +48,7 @@ class ActorDao extends Dao
     //Ajoute 1 acteur
     public function addOne(string $name, string $firstname): bool
     {
+        $query = $this->pdo->prepare('INSERT INTO actor (name, firstname) VALUES (:name, :firstname)');
         if (self::actorExists($name, $firstname)) {
             return false; // L'acteur existe déjà
         }

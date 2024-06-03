@@ -13,6 +13,9 @@ use Model\entity\Role;
 
 $errors = [];
 $message = null;
+$ActorDao = new ActorDao();
+$RoleDao = new RoleDao();
+$MovieDao = new MovieDao();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Vérifie si tous les champs nécessaires sont présents
@@ -54,14 +57,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Création des rôles
             $roles = [];
             for ($i = 0; $i < count($characters); $i++) {
-                $existingActor = ActorDao::actorExists($names[$i], $firstnames[$i]);
+                $existingActor = $ActorDao->actorExists($names[$i], $firstnames[$i]);
                 if ($existingActor) {
                     $actor = $existingActor;
                 } else {
                     $actor = new Actor(null, $names[$i], $firstnames[$i]);
-                    ActorDao::addOne($names[$i], $firstnames[$i]);
+                    $ActorDao->addOne($names[$i], $firstnames[$i]);
                 }
-                $existingRole = RoleDao::roleExists($fk_movie, $actor->getId(), $characters[$i]);
+                $existingRole = $RoleDao->roleExists($fk_movie, $actor->getId(), $characters[$i]);
                 if (!$existingRole) {
                     $role = new Role(null, $characters[$i], $actor);
                     $roles[] = $role;
@@ -74,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $movie = new Movie(null, $title, $director, $poster, $year, $roles);
 
                 // Ajout du film dans la BDD
-                $result = MovieDao::addOne($movie);
+                $result = $MovieDao->addOne($movie);
 
                 if ($result['status']) {
                     $message = $result['message'];
@@ -89,12 +92,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 echo $twig->render('creer.html.twig', ['message' => $message, 'errors' => $errors, 'movie' => $movie ?? null]);
-?>
 
 
 
 
-// ---------------- V3 ----------------
+
+//---------------- V3 ----------------
 
 // echo $twig->render('creer.html.twig', ['erreur' => 404]);
 
