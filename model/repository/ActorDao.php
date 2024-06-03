@@ -1,6 +1,4 @@
 <?php
-namespace Model\repository;
-use Model\Entity\Actor;
 
 namespace Model\repository;
 
@@ -33,16 +31,29 @@ class ActorDao
         }
     }
 
+    //Vérifie si un acteur existe déjà
+    public static function actorExists(string $name, string $firstname): ?Actor
+    {
+        $query = BDD->prepare('SELECT * FROM actor WHERE name = :name AND firstname = :firstname');
+        $query->execute(array(':name' => $name, ':firstname' => $firstname));
+        $data = $query->fetch();
+        if ($data) {
+            return new Actor($data['id'], $data['name'], $data['firstname']);
+        } else {
+            return null;
+        }
+    }
+
     //Ajoute 1 acteur
     public static function addOne(string $name, string $firstname): bool
     {
+        if (self::actorExists($name, $firstname)) {
+            return false; // L'acteur existe déjà
+        }
+
         $query = BDD->prepare('INSERT INTO actor (name, firstname) VALUES (:name, :firstname)');
         $result = $query->execute(array(':name' => $name, ':firstname' => $firstname));
 
-        if ($result) {
-            return true;
-        } else {
-            return false;
-        }
+        return $result ? true : false;
     }
 }
