@@ -9,9 +9,10 @@ use Model\entity\Movie;
 use Model\entity\Actor;
 use Model\entity\Role;
 
-echo $twig->render('creer.html.twig', ['erreur' => 404]);
+// ---------------- V4 ----------------
 
-// ---------------- V3 ----------------
+$errors = [];
+$message = null;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Vérifie si tous les champs nécessaires sont présents
@@ -25,46 +26,130 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $characters = $_POST['character'];
         $names = $_POST['name'];
         $firstnames = $_POST['firstname'];
-        
-        // Vérification des champs (ici, juste un exemple basique)
+
+        // Vérification des champs
         if (empty($title)) {
-            echo "Veuillez renseigner un titre";
-        } elseif (empty($year)) {
-            echo "Veuillez renseigner une année";
-        } elseif (empty($poster)) {
-            echo "Veuillez ajouter une affiche";
-        } elseif (empty($director)) {
-            echo "Veuillez renseigner un réalisateur";
-        } elseif (empty($characters)) {
-            echo "Veuillez renseigner un personnage";
-        } elseif (empty($names)) {
-            echo "Veuillez renseigner le nom de l'acteur/actrice";
-        } elseif (empty($firstnames)) {
-            echo "Veuillez renseigner le prénom de l'acteur/actrice";
-        } else {
+            $errors[] = "Veuillez renseigner un titre";
+        }
+        if (empty($year)) {
+            $errors[] = "Veuillez renseigner une année";
+        }
+        if (empty($poster)) {
+            $errors[] = "Veuillez ajouter une affiche";
+        }
+        if (empty($director)) {
+            $errors[] = "Veuillez renseigner un réalisateur";
+        }
+        if (empty($characters)) {
+            $errors[] = "Veuillez renseigner un personnage";
+        }
+        if (empty($names)) {
+            $errors[] = "Veuillez renseigner le nom de l'acteur/actrice";
+        }
+        if (empty($firstnames)) {
+            $errors[] = "Veuillez renseigner le prénom de l'acteur/actrice";
+        }
+
+        if (empty($errors)) {
             // Création des rôles
             $roles = [];
             for ($i = 0; $i < count($characters); $i++) {
-                $actor = new Actor(null, $names[$i], $firstnames[$i]);
-                $role = new Role(null, $characters[$i], $actor);
-                $roles[] = $role;
+                $existingActor = ActorDao::actorExists($names[$i], $firstnames[$i]);
+                if ($existingActor) {
+                    $actor = $existingActor;
+                } else {
+                    $actor = new Actor(null, $names[$i], $firstnames[$i]);
+                    ActorDao::addOne($names[$i], $firstnames[$i]);
+                }
+                $existingRole = RoleDao::roleExists($fk_movie, $actor->getId(), $characters[$i]);
+                if (!$existingRole) {
+                    $role = new Role(null, $characters[$i], $actor);
+                    $roles[] = $role;
+                } else {
+                    $errors[] = "Le rôle pour le personnage {$characters[$i]} joué par {$names[$i]} {$firstnames[$i]} existe déjà.";
+                }
             }
 
-            $movie = new Movie(null, $title, $director, $poster, $year, $roles);
+            if (empty($errors)) {
+                $movie = new Movie(null, $title, $director, $poster, $year, $roles);
 
-            // Ajout du film dans la BDD
-            $result = MovieDao::addOne($movie);
+                // Ajout du film dans la BDD
+                $result = MovieDao::addOne($movie);
 
-            if ($result['status']) {
-                echo $result['message'];
-            } else {
-                echo "Erreur : " . $result['message'];
+                if ($result['status']) {
+                    $message = $result['message'];
+                } else {
+                    $errors[] = "Erreur : " . $result['message'];
+                }
             }
         }
     } else {
-        echo "Tous les champs du formulaire doivent être remplis.";
+        $errors[] = "Tous les champs du formulaire doivent être remplis.";
     }
 }
+
+echo $twig->render('creer.html.twig', ['message' => $message, 'errors' => $errors, 'movie' => $movie ?? null]);
+?>
+
+
+
+
+// ---------------- V3 ----------------
+
+// echo $twig->render('creer.html.twig', ['erreur' => 404]);
+
+// if ($_SERVER["REQUEST_METHOD"] == "POST") {
+//     // Vérifie si tous les champs nécessaires sont présents
+//     if (isset($_POST['title'], $_POST['year'], $_POST['poster'], $_POST['director'], $_POST['character'], $_POST['name'], $_POST['firstname'])) {
+        
+//         // Récupération des données du formulaire
+//         $title = $_POST['title'];
+//         $year = $_POST['year'];
+//         $poster = $_POST['poster'];
+//         $director = $_POST['director'];
+//         $characters = $_POST['character'];
+//         $names = $_POST['name'];
+//         $firstnames = $_POST['firstname'];
+        
+//         // Vérification des champs (ici, juste un exemple basique)
+//         if (empty($title)) {
+//             echo "Veuillez renseigner un titre";
+//         } elseif (empty($year)) {
+//             echo "Veuillez renseigner une année";
+//         } elseif (empty($poster)) {
+//             echo "Veuillez ajouter une affiche";
+//         } elseif (empty($director)) {
+//             echo "Veuillez renseigner un réalisateur";
+//         } elseif (empty($characters)) {
+//             echo "Veuillez renseigner un personnage";
+//         } elseif (empty($names)) {
+//             echo "Veuillez renseigner le nom de l'acteur/actrice";
+//         } elseif (empty($firstnames)) {
+//             echo "Veuillez renseigner le prénom de l'acteur/actrice";
+//         } else {
+//             // Création des rôles
+//             $roles = [];
+//             for ($i = 0; $i < count($characters); $i++) {
+//                 $actor = new Actor(null, $names[$i], $firstnames[$i]);
+//                 $role = new Role(null, $characters[$i], $actor);
+//                 $roles[] = $role;
+//             }
+
+//             $movie = new Movie(null, $title, $director, $poster, $year, $roles);
+
+//             // Ajout du film dans la BDD
+//             $result = MovieDao::addOne($movie);
+
+//             if ($result['status']) {
+//                 echo $result['message'];
+//             } else {
+//                 echo "Erreur : " . $result['message'];
+//             }
+//         }
+//     } else {
+//         echo "Tous les champs du formulaire doivent être remplis.";
+//     }
+// }
 
 
 
