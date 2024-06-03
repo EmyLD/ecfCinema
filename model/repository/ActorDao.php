@@ -32,9 +32,9 @@ class ActorDao extends Dao
     }
 
     //Vérifie si un acteur existe déjà
-    public static function actorExists(string $name, string $firstname): ?Actor
+    public function actorExists(string $name, string $firstname): ?Actor
     {
-        $query = BDD->prepare('SELECT * FROM actor WHERE name = :name AND firstname = :firstname');
+        $query = $this->pdo->prepare('SELECT * FROM actor WHERE name = :name AND firstname = :firstname');
         $query->execute(array(':name' => $name, ':firstname' => $firstname));
         $data = $query->fetch();
         if ($data) {
