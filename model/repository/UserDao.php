@@ -1,10 +1,10 @@
 <?php
 
 
-
 namespace Model\repository;
+use Model\repository\Dao;
 
- class UserDao 
+ class UserDao extends Dao
 {
     public static function findOne($email, $password) : string  
     {

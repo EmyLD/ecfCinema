@@ -1,15 +1,17 @@
 <?php
-require_once './model/repository/connexion.php';
+// require_once './model/repository/connexion.php';
 
 
 
 use Model\repository\MovieDao;
 
-$movies = MovieDao::getAll();
+$movieDao = new MovieDao();
+
+$movies = $movieDao->getAll();
 if(isset($_POST['search'])){
-    $movies = MovieDao::getAll($_POST['search']);
+    $movies = $movieDao->getAll($_POST['search']);
 }else {
-    $movies = MovieDao::getAll();
+    $movies = $movieDao->getAll();
 }
 
 

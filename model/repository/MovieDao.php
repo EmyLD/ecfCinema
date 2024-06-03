@@ -3,17 +3,20 @@
 namespace Model\repository;
 
 use Model\repository\RoleDao;
-use Model\entity\Role;
 use Model\entity\Movie;
-use Model\repository\connexion;
+use Model\repository\Dao;
 use Exception;
 
-class MovieDao
+class MovieDao extends Dao
 {
-
-    public static function getAll($search = "")
+    public function __construct()
     {
-        $query = BDD->prepare('SELECT * FROM movie WHERE movie.title like :search');
+        parent::__construct();
+    }
+
+    public function getAll($search = "")
+    {
+        $query = $this->pdo->prepare('SELECT * FROM movie WHERE movie.title like :search');
         $search = '%' . $search . '%';
         $query->execute(array(':search' => $search));
         $movies = array();
@@ -24,20 +27,19 @@ class MovieDao
         return $movies;
     }
 
-    //Récupére 1 film
-    public static function getOne(int $id): Movie
+    public function getOne(int $id): Movie
     {
-        $query = BDD->prepare('SELECT * FROM movie WHERE id = :id_movie');
+        $query = $this->pdo->prepare('SELECT * FROM movie WHERE id = :id_movie');
         $query->execute(array(':id_movie' => $id));
         $data = $query->fetch();
         $roles = RoleDao::getByMovie($data['id']);
         return new Movie($data['id'], $data['title'], $data['director'], $data['poster'], $data['years'], $roles);
     }
 
-    public static function addOne($movie)
+    public function addOne($movie)
     {
         try {
-            $query = BDD->prepare('INSERT INTO movie (title, year, poster, director) VALUES (:title, :year, :poster, :director)');
+            $query = $this->pdo->prepare('INSERT INTO movie (title, year, poster, director) VALUES (:title, :year, :poster, :director)');
             $result = $query->execute(array(
                 ':title' => $movie->getTitle(),
                 ':year' => $movie->getYear(),
@@ -49,7 +51,7 @@ class MovieDao
                 return array('status' => false, 'message' => 'Erreur lors de l\'ajout du film.');
             }
     
-            $idMovie = BDD->lastInsertId();
+            $idMovie = $this->pdo->lastInsertId();
     
             foreach ($movie->getRoles() as $role) {
                 $actor = $role->getActor();
@@ -59,7 +61,7 @@ class MovieDao
                     return array('status' => false, 'message' => 'Erreur lors de l\'ajout de l\'acteur.');
                 }
     
-                $idActor = BDD->lastInsertId();
+                $idActor = $this->pdo->lastInsertId();
                 $roleAdded = RoleDao::addOne($idMovie, $idActor, $role->getCharacter());
     
                 if (!$roleAdded) {
@@ -73,27 +75,5 @@ class MovieDao
             return array('status' => false, 'message' => 'Erreur: ' . $e->getMessage());
         }
     }
-
-    //     //Ajoute 1 film dans la BDD
-    //     public static function createMovie($title, $years, $poster, $director)
-    //     {
-    //         //Ajoute le film dans la BDD
-    //         MovieDao::addOne($title, $years, $poster, $director);
-    //         $idMovie = BDD->lastInsertId();
-
-    //         //Parcourt chaque rôle dans le tableau
-    //         foreach ($_POST['roles'] as $role) {
-    //             if (empty($role['character']) || empty($role['name']) || empty($role['firstname'])) {
-    //                 return "Les informations d'un ou plusieurs rôles sont manquantes";
-    //             }
-
-    //             //Ajoute l'acteur dans la BDD    
-    //             ActorDao::addOne($role['name'], $role['firstname']);
-    //             $idActor = BDD->lastInsertId();
-    //             //Ajoute le rôle dans la BDD
-    //             RoleDao::addOne($idMovie, $idActor, $role['character']);
-
-    //             return true;
-    //         }
-    //     }
 }
+?>

@@ -7,8 +7,9 @@ use Model\entity\Movie;
 use Model\entity\Actor;
 use Model\repository\MovieDao;
 use Model\repository\ActorDao;
+use Model\repository\Dao;
 
-class RoleDao
+class RoleDao extends Dao
 {
     //Récupère tous les rôles
     public static function getAll()

@@ -1,12 +1,11 @@
 <?php
-namespace Model\repository;
-use Model\Entity\Actor;
+
 
 namespace Model\repository;
-
+use Model\repository\Dao;
 use Model\entity\Actor;
 
-class ActorDao
+class ActorDao extends Dao
 {
     //Récupère tous les acteurs
     public static function getAll(): array
