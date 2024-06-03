@@ -10,3 +10,10 @@ header form {
 body {
     height: 94vh;
 }
+main{
+    height: 75%;
+}
+
+button{
+    text-align: center;
+}

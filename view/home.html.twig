@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Accueil</title>
+  </head>
+  <body>
+    <main>
+      <div
+        style="height: 100%"
+        class="d-flex flex-column justify-content-center align-self-center"
+      >
+        <!-- Carousel Start -->
+        <div class="container-fluid" style="height: 60%">
+          <div
+            id="headerCarousel"
+            class="carousel slide"
+            data-bs-ride="carousel"
+          >
+            <div class="carousel-inner">
+              {# Caroussel pour affichage des véhicules #} {% for item in
+              movies %} {% set current_movie = item %}
+                
+              <div class="carousel-item {{ loop.first ? 'active' : '' }}">
+                <div class="container">
+                  <div
+                    class="row align-items-center justify-content-center justify-content-lg-start"
+                  >
+                    <div
+                      class="col-6 col-lg-7 text-center text-lg-start justify-content-start align-self-start"
+                    >
+                      <h1 class="text-black mb-3 animated slideInDown">
+                        {{ loop.index }} - {{ item.getTitle }}
+                      </h1>
+
+                      <p>
+                        Réalisé en <strong>{{ item.getYear }}</strong> par
+                        <strong>{{ item.getDirector }}</strong>
+                      </p>
+
+                      {% for role in item.getRoles %}
+                      {% set name = role.getActor().getName() %} {% set firstName
+                      = role.getActor().getFirstName() %} {% set current_actor =
+                      name ~ " " ~ firstName %}
+
+                      <p>
+                        avec <strong>{{ current_actor }}</strong> dans le role
+                        de
+                        <strong>{{ role.getCharacter }}</strong>
+                      </p>
+
+                      {% endfor %}
+                    </div>
+
+                    <div class="col-6 w-25 col-lg-7 text-center text-lg-start">
+                      <img
+                        src="{{ item.getPoster }}"
+                        alt=""
+                        class="w-100 h-100 shadow rounded"
+                        id="img_movie"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <div class="container w-25 text-center mt-3">
+          <button
+            class="btn btn-outline-dark col-3 text-center"
+            style="box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2)"
+            type="button"
+            data-bs-target="#headerCarousel"
+            data-bs-slide="prev"
+          >
+            Previous
+          </button>
+          <button
+            class="btn btn-outline-dark col-3 text-center"
+            style="box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2)"
+            type="button"
+            data-bs-target="#headerCarousel"
+            data-bs-slide="next"
+          >
+            Next
+          </button>
+        </div>
+        <hr style="margin-top: 50px" />
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,6 +1,6 @@
 <?php
 
-require_once "Model/repository/connexion.php";
+
 
 use Model\repository\MovieDao;
 use Model\repository\ActorDao;
